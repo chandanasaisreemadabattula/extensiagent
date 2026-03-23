@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+# ExtensiAgent - AI Extension Security & Trust Analyzer for VS Code
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![Version](https://img.shields.io/vscode-marketplace/v/aditicharon.extensiagent.svg?colorA=655ded&colorB=4F46E5)](https://marketplace.visualstudio.com/items?itemName=aditicharon.extensiagent)
+[![Installs](https://img.shields.io/vscode-marketplace/i/aditicharon.extensiagent.svg?colorA=655ded&colorB=4F46E5)](https://marketplace.visualstudio.com/items?itemName=aditicharon.extensiagent)
+[![Rating](https://img.shields.io/vscode-marketplace/r/aditicharon.extensiagent.svg?colorA=655ded&colorB=4F46E5)](https://marketplace.visualstudio.com/items?itemName=aditicharon.extensiagent)
+[![License](https://img.shields.io/github/license/sails-software/extensiagent.svg?colorA=655ded&colorB=4F46E5)](LICENSE)
 
-## Available Scripts
+ExtensiAgent is an AI-powered security and trust analyzer for VS Code extensions. It scans extensions for potential risks, permissions, and trust signals using advanced AI analysis and Supabase backend integration.
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+- **AI-Powered Extension Vetting**: Analyzes extension permissions, code patterns, and behavior
+- **TrustShield™ Protection**: Real-time trust scoring and risk assessment
+- **Trust Reports**: Detailed security analysis with actionable insights
+- **Live Agent Streaming**: Real-time analysis with streaming UI updates
+- **Supabase Integration**: Secure backend for vetting functions and data storage
+- **Modern UI**: Responsive design with shadcn/ui components and Tailwind CSS
+- **Command Bar**: Fast access to analysis commands
+- **Mobile-Responsive**: Works great on all screen sizes
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛡️ Key Components
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| Component | Description |
+|-----------|-------------|
+| **TrustShield** | Main security dashboard and protection interface |
+| **TrustReport** | Detailed analysis reports with risk breakdown |
+| **AgentStream** | Live AI analysis streaming interface |
+| **CommandBar** | Quick access to vetting commands |
+| **PermissionRow** | Permission analysis and risk visualization |
 
-### `npm test`
+## 🔧 Quick Start
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Install** from VS Code Marketplace
+2. **Open Command Palette** (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+3. **Run** `Start ExtensiAgent` 
+4. **Review** AI-powered trust report and security insights
 
-### `npm run build`
+## 🛠 Development
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+# Install dependencies
+npm install
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Development server
+npm run dev
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Build extension
+npm run build
 
-### `npm run eject`
+# Package VSIX
+npm run package
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Deploy (Windows)
+deploy.bat
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📱 Web Preview
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## 🔒 Security & Privacy
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- All analysis runs through secure Supabase Edge Functions
+- No extension code is stored permanently
+- Privacy-first design with opt-in data collection
+- Open source vetting logic
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🤝 Contributing
 
-### Code Splitting
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 📄 License
 
-### Analyzing the Bundle Size
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🙌 Acknowledgments
 
-### Making a Progressive Web App
+- [shadcn/ui](https://ui.shadcn.com/) - Beautiful UI components
+- [Supabase](https://supabase.com/) - Backend infrastructure
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
+- [Vite](https://vitejs.dev/) - Fast development server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+⭐ **Star this project if you find it useful!** ⭐

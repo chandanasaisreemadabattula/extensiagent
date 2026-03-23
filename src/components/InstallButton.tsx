@@ -2,6 +2,17 @@ import { useState } from "react";
 import { Copy, Check, Terminal, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Declare the vscode API type
+declare global {
+  interface Window {
+    acquireVsCodeApi?: () => {
+      postMessage: (message: unknown) => void;
+      getState?: () => unknown;
+      setState?: (state: unknown) => void;
+    };
+  }
+}
+
 interface InstallButtonProps {
   extensionId: string;
 }
@@ -11,6 +22,10 @@ export function InstallButton({ extensionId }: InstallButtonProps) {
   const command = `code --install-extension ${extensionId}`;
   const marketplaceUrl = `https://marketplace.visualstudio.com/items?itemName=${extensionId}`;
 
+  // Check if running inside VS Code extension
+  const vscodeApi = typeof window.acquireVsCodeApi === 'function' ? window.acquireVsCodeApi() : null;
+  const isVSCode = vscodeApi !== null;
+
   const handleCopy = async () => {
     await navigator.clipboard.writeText(command);
     setCopied(true);
@@ -18,13 +33,22 @@ export function InstallButton({ extensionId }: InstallButtonProps) {
   };
 
   const handleOpenMarketplace = () => {
-    window.open(marketplaceUrl, '_blank');
+    if (vscodeApi) {
+      // Use VS Code API to open external URLs when running in extension
+      vscodeApi.postMessage({
+        command: 'openExternal',
+        url: marketplaceUrl
+      });
+    } else {
+      // Fall back to window.open for browser development
+      window.open(marketplaceUrl, '_blank');
+    }
   };
 
   return (
     <div className="space-y-3">
       {/* Option 1: Terminal command */}
-      <div className="space-y-1">
+      {/* <div className="space-y-1">
         <p className="text-[10px] text-muted-foreground">Option 1: Run in VS Code terminal</p>
         <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md px-3 py-2">
           <Terminal className="w-4 h-4 text-muted-foreground shrink-0" />
@@ -42,11 +66,11 @@ export function InstallButton({ extensionId }: InstallButtonProps) {
         {copied && (
           <p className="text-[10px] text-green-600 dark:text-green-400">✓ Copied! Paste in terminal to install</p>
         )}
-      </div>
+      </div> */}
 
       {/* Option 2: Direct link */}
       <div className="space-y-1">
-        <p className="text-[10px] text-muted-foreground">Option 2: Open in VS Code</p>
+        <p className="text-[10px] text-muted-foreground">Open in VS Code</p>
         <Button
           variant="outline"
           size="sm"

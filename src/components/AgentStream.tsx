@@ -22,7 +22,7 @@ export function AgentStream({ messages, isStreaming, allReports, onSelectExtensi
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full blur-2xl opacity-30 animate-pulse"></div>
               <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-2xl shadow-blue-500/50">
-                <span className="text-3xl font-mono font-bold text-white">ext</span>
+                <span className="text-3xl font-mono font-bold text-white">EA</span>
               </div>
             </div>
           </div>
