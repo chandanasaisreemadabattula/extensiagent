@@ -3,7 +3,7 @@
   "displayName": "ExtensiAgent",
   "description": "AI Agent Extension Security & Trust Analyzer - Analyze, trust, and manage VSCode extensions with AI-powered security scanning",
   "private": false,
-  "version": "1.0.8",
+  "version": "1.0.9",
   "publisher": "aditicharon",
   "license": "MIT",
   "keywords": ["extension", "security", "trust", "ai", "agent", "scanner", "vscode", "analysis", "safety"],
@@ -16,7 +16,7 @@
     "vscode": "^1.110.0"
   },
   "main": "out/extension.js",
-  "icon": "public/logo192.png",
+  "icon": "logo.png",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

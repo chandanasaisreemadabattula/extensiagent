@@ -12,6 +12,7 @@ src/
 Thumbs.db
 *.ico
 *.png
+!logo.png
 *.svg
 public/
 supabase/
