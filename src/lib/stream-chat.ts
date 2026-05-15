@@ -8,12 +8,20 @@ export async function streamChat({
   onDone,
   onReport,
   onAllReports,
+  onVersionScores,
+  onRecommendations,
+  onSecurityAssessment,
+  onInsights,
 }: {
   messages: Msg[];
   onDelta: (text: string) => void;
   onDone: () => void;
   onReport?: (report: any) => void;
   onAllReports?: (reports: any[]) => void;
+  onVersionScores?: (data: { versions: any[]; averageScore: number }) => void;
+  onRecommendations?: (recommendations: any[]) => void;
+  onSecurityAssessment?: (assessment: any) => void;
+  onInsights?: (data: { insights: any[]; trendAnalyses: any[]; predictions: any[] }) => void;
 }) {
   const resp = await fetch(CHAT_URL, {
     method: "POST",
@@ -60,6 +68,7 @@ export async function streamChat({
 
       try {
         const parsed = JSON.parse(jsonStr);
+        
         // Check if it's a report payload
         if (parsed.report && onReport) {
           onReport(parsed.report);
@@ -68,6 +77,38 @@ export async function streamChat({
           }
           continue;
         }
+        
+        // Check for version scores
+        if (parsed.versionScores && onVersionScores) {
+          onVersionScores({
+            versions: parsed.versionScores,
+            averageScore: parsed.averageVersionScore || 0,
+          });
+          continue;
+        }
+        
+        // Check for recommendations
+        if (parsed.recommendations && onRecommendations) {
+          onRecommendations(parsed.recommendations);
+          continue;
+        }
+        
+        // Check for security assessment
+        if (parsed.securityAssessment && onSecurityAssessment) {
+          onSecurityAssessment(parsed.securityAssessment);
+          continue;
+        }
+        
+        // Check for insights
+        if (parsed.insights && onInsights) {
+          onInsights({
+            insights: parsed.insights || [],
+            trendAnalyses: parsed.trendAnalyses || [],
+            predictions: parsed.predictions || [],
+          });
+          continue;
+        }
+        
         const content = parsed.choices?.[0]?.delta?.content as string | undefined;
         if (content) onDelta(content);
       } catch {
@@ -89,6 +130,29 @@ export async function streamChat({
       try {
         const parsed = JSON.parse(jsonStr);
         if (parsed.report && onReport) { onReport(parsed.report); continue; }
+        if (parsed.versionScores && onVersionScores) {
+          onVersionScores({
+            versions: parsed.versionScores,
+            averageScore: parsed.averageVersionScore || 0,
+          });
+          continue;
+        }
+        if (parsed.recommendations && onRecommendations) {
+          onRecommendations(parsed.recommendations);
+          continue;
+        }
+        if (parsed.securityAssessment && onSecurityAssessment) {
+          onSecurityAssessment(parsed.securityAssessment);
+          continue;
+        }
+        if (parsed.insights && onInsights) {
+          onInsights({
+            insights: parsed.insights || [],
+            trendAnalyses: parsed.trendAnalyses || [],
+            predictions: parsed.predictions || [],
+          });
+          continue;
+        }
         const content = parsed.choices?.[0]?.delta?.content as string | undefined;
         if (content) onDelta(content);
       } catch { /* ignore */ }

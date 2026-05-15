@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -83,7 +84,7 @@ function formatExtensionContext(extensions: MarketplaceExtension[]): string {
     .join("\n");
 }
 
-const SYSTEM_PROMPT = `You are ext://, a VS Code Extension Vetting Agent. You help developers find and evaluate VS Code extensions.
+const SYSTEM_PROMPT = `You are ExtensiAgent, a VS Code Extension Vetting Agent. You help developers find and evaluate VS Code extensions.
 
 When the user asks about extensions, you will receive marketplace data. Analyze it and:
 1. Recommend the BEST extension for their needs
@@ -123,6 +124,37 @@ Community score: Based on downloads, ratings, and update frequency.
 
 Be direct. Use terminal-style language. No fluff.`;
 
+async function callSupabaseFunction(functionName: string, payload: any): Promise<any> {
+  const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+  const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    console.error("Supabase configuration missing");
+    return null;
+  }
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/${functionName}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      console.error(`${functionName} error:`, response.status, await response.text());
+      return null;
+    }
+
+    return await response.json();
+  } catch (e) {
+    console.error(`Error calling ${functionName}:`, e);
+    return null;
+  }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -136,9 +168,10 @@ serve(async (req) => {
     // Get the latest user message to search marketplace
     const lastUserMsg = [...messages].reverse().find((m: any) => m.role === "user");
     let marketplaceContext = "";
+    let extensions: MarketplaceExtension[] = [];
 
     if (lastUserMsg) {
-      const extensions = await searchMarketplace(lastUserMsg.content);
+      extensions = await searchMarketplace(lastUserMsg.content);
       if (extensions.length > 0) {
         marketplaceContext = `\n\n--- VS Code Marketplace Results ---\n${formatExtensionContext(extensions)}\n--- End Results ---`;
       }
@@ -227,6 +260,62 @@ serve(async (req) => {
             const report = JSON.parse(jsonMatch[1]);
             const reportEvent = encoder.encode(`data: ${JSON.stringify({ report })}\n\n`);
             controller.enqueue(reportEvent);
+
+            // Call Version 2 functions in parallel
+            const extensionId = report.extensionId;
+            
+            // Call all Version 2 functions concurrently
+            const [versionScoresResult, recommendationsResult, securityResult, insightsResult] = await Promise.allSettled([
+              callSupabaseFunction('ai-version-scoring', { extensionId }),
+              callSupabaseFunction('personalized-recommendations', { 
+                userId: 'anonymous', 
+                installedExtensions: [extensionId] 
+              }),
+              callSupabaseFunction('security-assessment', { extensionId }),
+              callSupabaseFunction('ai-insights', { extensionId }),
+            ]);
+
+            // Send version scores
+            if (versionScoresResult.status === 'fulfilled' && versionScoresResult.value) {
+              const versionData = versionScoresResult.value;
+              const versionEvent = encoder.encode(`data: ${JSON.stringify({ 
+                versionScores: versionData.versionScores || [],
+                averageVersionScore: versionData.averageVersionScore || 0,
+              })}\n\n`);
+              controller.enqueue(versionEvent);
+            }
+
+            // Send recommendations
+            if (recommendationsResult.status === 'fulfilled' && recommendationsResult.value) {
+              const recData = recommendationsResult.value;
+              const recEvent = encoder.encode(`data: ${JSON.stringify({ 
+                recommendations: recData.recommendations || [],
+              })}\n\n`);
+              controller.enqueue(recEvent);
+            }
+
+            // Send security assessment
+            if (securityResult.status === 'fulfilled' && securityResult.value) {
+              const secData = securityResult.value;
+              if (secData.results && secData.results.length > 0) {
+                const secEvent = encoder.encode(`data: ${JSON.stringify({ 
+                  securityAssessment: secData.results[0],
+                })}\n\n`);
+                controller.enqueue(secEvent);
+              }
+            }
+
+            // Send insights
+            if (insightsResult.status === 'fulfilled' && insightsResult.value) {
+              const insightData = insightsResult.value;
+              const insightEvent = encoder.encode(`data: ${JSON.stringify({ 
+                insights: insightData.insights || [],
+                trendAnalyses: insightData.trendAnalyses || [],
+                predictions: insightData.predictions || [],
+              })}\n\n`);
+              controller.enqueue(insightEvent);
+            }
+
           } catch (e) {
             console.error("Failed to parse report JSON:", e);
           }

@@ -1,12 +1,12 @@
 {
   "name": "extensiagent",
-  "displayName": "ExtensiAgent",
-  "description": "AI Agent Extension Security & Trust Analyzer - Analyze, trust, and manage VSCode extensions with AI-powered security scanning",
+  "displayName": "ExtensiAgent v2",
+  "description": "AI-Powered VS Code Extension Security & Trust Analyzer - Analyze extensions with AI version scoring, personalized recommendations, security assessments, and trend insights",
   "private": false,
-  "version": "1.0.9",
+  "version": "2.0.0",
   "publisher": "aditicharon",
   "license": "MIT",
-  "keywords": ["extension", "security", "trust", "ai", "agent", "scanner", "vscode", "analysis", "safety"],
+  "keywords": ["extension", "security", "trust", "ai", "agent", "scanner", "vscode", "analysis", "safety", "recommendations", "insights", "version-scoring"],
   "repository": {
     "type": "git",
     "url": "https://github.com/chandanasaisreemadabattula/extensiagent"
