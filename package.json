@@ -1,10 +1,10 @@
 {
-  "name": "hdjsncws122",
-  "displayName": "hdjsncws122",
+  "name": "extensionvalidatev1",
+  "displayName": "extensionvalidatev1",
   "description": "AI-Powered VS Code Extension Security & Trust Analyzer - Analyze extensions with AI version scoring, personalized recommendations, security assessments, and trend insights",
   "private": false,
-  "version": "2.1.6",
-  "publisher": "chandanasaisree",
+  "version": "3.5.13",
+  "publisher": "SiddharthaSanapala",
   "license": "MIT",
   "keywords": ["extension", "security", "trust", "ai", "agent", "scanner", "vscode", "analysis", "safety", "recommendations", "insights", "version-scoring"],
   "repository": {
@@ -32,13 +32,13 @@
   "contributes": {
     "commands": [
       {
-        "command": "extensiagent.start",
-        "title": "Start ExtensiAgent"
+        "command": "extensionvalidatev1.start",
+        "title": "Start extensionvalidatev1"
       }
     ]
   },
   "activationEvents": [
-    "onCommand:extensiagent.start"
+    "onCommand: extensionvalidatev1.start"
   ],
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

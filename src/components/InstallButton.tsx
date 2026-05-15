@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Copy, Check, Terminal, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getVsCodeApi } from "@/lib/vscodeApi";
 
 // Declare the vscode API type
 declare global {
@@ -22,8 +23,8 @@ export function InstallButton({ extensionId }: InstallButtonProps) {
   const command = `code --install-extension ${extensionId}`;
   const marketplaceUrl = `https://marketplace.visualstudio.com/items?itemName=${extensionId}`;
 
-  // Check if running inside VS Code extension
-  const vscodeApi = typeof window.acquireVsCodeApi === 'function' ? window.acquireVsCodeApi() : null;
+  // Check if running inside VS Code extension (use safe cached wrapper)
+  const vscodeApi = getVsCodeApi();
   const isVSCode = vscodeApi !== null;
 
   const handleCopy = async () => {
@@ -35,10 +36,17 @@ export function InstallButton({ extensionId }: InstallButtonProps) {
   const handleOpenMarketplace = () => {
     if (vscodeApi) {
       // Use VS Code API to open external URLs when running in extension
-      vscodeApi.postMessage({
-        command: 'openExternal',
-        url: marketplaceUrl
-      });
+      try {
+        vscodeApi.postMessage({
+          command: 'openExternal',
+          url: marketplaceUrl
+        });
+      } catch (err) {
+        // If posting message fails, fall back to window.open and log the error
+        // eslint-disable-next-line no-console
+        console.error('Failed to post message to VS Code host:', err);
+        window.open(marketplaceUrl, '_blank');
+      }
     } else {
       // Fall back to window.open for browser development
       window.open(marketplaceUrl, '_blank');

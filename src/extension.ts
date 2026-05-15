@@ -9,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
   console.log('ExtensiAgent extension is now active!');
 
   // Register the command to start the agent
-  const disposable = vscode.commands.registerCommand('extensiagent.start', () => {
+  const disposable = vscode.commands.registerCommand('extensionvalidatev1.start', () => {
     // Create and show a new webview panel
     const distDir = path.join(context.extensionPath, 'dist');
     const indexHtmlPath = path.join(distDir, 'index.html');

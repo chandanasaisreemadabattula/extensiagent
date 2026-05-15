@@ -1,6 +1,15 @@
 type Msg = { role: "user" | "assistant"; content: string };
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/index`;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+const CHAT_URL = SUPABASE_URL ? `${SUPABASE_URL}/functions/v1/index` : "";
+
+if (!SUPABASE_URL || !SUPABASE_KEY) {
+  throw new Error(
+    "Supabase endpoint is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY before building the extension."
+  );
+}
 
 export async function streamChat({
   messages,
