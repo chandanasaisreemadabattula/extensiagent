@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-  <!-- VSCode-style icon: square with rounded corners -->
-  <rect width="256" height="256" rx="30" fill="#007acc"/>
-  
-  <!-- Extension symbol: </> (code brackets) -->
-  <path d="M80 70 L50 128 L80 186" fill="none" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M176 70 L206 128 L176 186" fill="none" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M140 60 L116 196" fill="none" stroke="white" stroke-width="16" stroke-linecap="round"/>
-</svg>
