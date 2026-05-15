@@ -1,10 +1,10 @@
 {
-  "name": "extensiagent",
-  "displayName": "ExtensiAgent v2",
+  "name": "hdjsncws122",
+  "displayName": "hdjsncws122",
   "description": "AI-Powered VS Code Extension Security & Trust Analyzer - Analyze extensions with AI version scoring, personalized recommendations, security assessments, and trend insights",
   "private": false,
-  "version": "2.0.0",
-  "publisher": "aditicharon",
+  "version": "2.1.6",
+  "publisher": "chandanasaisree",
   "license": "MIT",
   "keywords": ["extension", "security", "trust", "ai", "agent", "scanner", "vscode", "analysis", "safety", "recommendations", "insights", "version-scoring"],
   "repository": {

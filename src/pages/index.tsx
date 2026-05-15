@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { CommandBar } from "@/components/CommandBar";
 import { AgentStream } from "@/components/AgentStream";
 import { TrustReport, ExtensionReport } from "@/components/TrustReport";
@@ -7,6 +7,7 @@ import { Recommendations, Recommendation } from "@/components/Recommendations";
 import { SecurityAssessment, SecurityAssessment as SecurityAssessmentType } from "@/components/SecurityAssessment";
 import { AIInsights, Insight, TrendAnalysis, Prediction } from "@/components/AIInsights";
 import { streamChat } from "@/lib/stream-chat";
+import { fetchMarketplaceData } from "@/lib/marketplace";
 import { toast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Shield, GitBranch, Star, Lock, Sparkles } from "lucide-react";
@@ -28,6 +29,26 @@ const Index = () => {
   const [insights, setInsights] = useState<Insight[]>([]);
   const [trendAnalyses, setTrendAnalyses] = useState<TrendAnalysis[]>([]);
   const [predictions, setPredictions] = useState<Prediction[]>([]);
+
+  // Fetch marketplace data when report changes
+  useEffect(() => {
+    if (!report) return;
+
+    const loadMarketplaceData = async () => {
+      const data = await fetchMarketplaceData(report.name);
+      if (data) {
+        setVersionScores(data.versionScores);
+        setAverageVersionScore(data.averageScore);
+        setRecommendations(data.recommendations);
+        setSecurityAssessment(data.securityAssessment);
+        setInsights(data.insights);
+        setTrendAnalyses(data.trendAnalyses);
+        setPredictions(data.predictions);
+      }
+    };
+
+    loadMarketplaceData();
+  }, [report]);
 
   const handleSubmit = useCallback(async (query: string) => {
     // Start fresh conversation for each new search
